@@ -8,15 +8,15 @@ let score = 0;
 
 let bodyX = []; // [first after head.... last after head]
 let bodyY = [];
-let headPosX = 5; // position of the snake head horizontally; -- means left
-let headPosY = 5; // position of the snake head vertically; -- means up
+let headPosX = 0; // position of the snake head horizontally; -- means left
+let headPosY = height - 1; // position of the snake head vertically; -- means up
 
 // mereu una din ele va fi 0 ca se mearga doar in cruce, nu si pe diagonala
 let direction = "down";
 let directionLastFrame = direction;
 let directionX = 0;
 let directionY = 1;
-
+let isSecondRender = false
 let foodX;
 let foodY;
 randomizeFoodPosition();
@@ -26,41 +26,68 @@ function randomizeFoodPosition() {
   foodY = Math.floor(Math.random() * height);
 }
 
-function render(isOnFood) {
+function render() {
   let str = `<div style="border: 1px solid black; display: inline-block">`;
 
-  for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
-      let isBody = false;
+  if (!isSecondRender) {
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        let isBody = false;
 
-      for (let k = 0; k < bodyX.length; k++) {
-        if (bodyX[k] === j && bodyY[k] === i) {
-          isBody = true;
-          break;
+        for (let k = 0; k < bodyX.length; k++) {
+          if (bodyX[k] === j && bodyY[k] === i) {
+            isBody = true;
+            break;
+          }
         }
+        const isFood = foodX == j && foodY == i;
+        const isHead = i == headPosY && j == headPosX;
+
+        const content = isHead
+          ? `<img width="${cellDimention}px" height="${cellDimention}px" src="Mihai.png">`
+          : isFood
+            ? `<img width="${cellDimention}px" height="${cellDimention}px" src="shit.png">`
+            : isBody
+              ? `<img width="${cellDimention}px" height="${cellDimention}px" src="trash.png">`
+              : `<img width="${cellDimention}px" height="${cellDimention}px" src="trash.png">`;
+
+        str += `<div data-x=${j} data-y=${i} style="width:${cellDimention}px; height:${cellDimention}px; display: inline-block;">${content}</div>`;
       }
-
-      const isFood = foodX == j && foodY == i;
-      const isHead = i == headPosY && j == headPosX;
-
-      const bkgColor =
-        isHead || isBody ? "red" : foodX == j && foodY == i ? "green" : "white";
-
-      const content = isHead
-        ? `<img width="${cellDimention}px" height="${cellDimention}px" src="Mihai.png">`
-        : isFood
-          ? `<img width="${cellDimention}px" height="${cellDimention}px" src="shit.png">`
-          : isBody
-            ? `<img width="${cellDimention}px" height="${cellDimention}px" src="trash.png">`
-            : " ";
-
-      str += `<div data-food="${isFood}" style="background-color: ${bkgColor}; width: ${cellDimention}px; height: ${cellDimention}px; display: inline-block;">${content}</div>`;
+      str += `<br>`;
     }
-    str += `<br>`;
+
+    document.body.innerHTML = str + `</div><br><span style="font-size: 40px">${score}</span>`;
+
+  } else {
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        let isBody = false;
+
+        for (let k = 0; k < bodyX.length; k++) {
+          if (bodyX[k] === j && bodyY[k] === i) {
+            isBody = true;
+            break;
+          }
+        }
+        const isFood = foodX == j && foodY == i;
+        const isHead = i == headPosY && j == headPosX;
+
+        const src = isHead
+          ? "Mihai.png"
+          : isFood
+            ? "shit.png"
+            : isBody
+              ? "trash.png"
+              : "";
+
+        const element = document.querySelector(`[data-x="${j}"][data-y="${i}"] img`)
+        element.src = src
+        element.style.display = src ? 'inline' : 'none'
+      }
+    }
   }
 
-  str += `</div><br><span style="font-size: 40px">${score}</span>`;
-  document.body.innerHTML = str;
+  isSecondRender = true
 }
 
 function frame() {
@@ -160,14 +187,6 @@ function handleKeyDown(e) {
 
 addEventListener("keydown", handleKeyDown);
 
-// addEventListener("mousedown", e => {
-//   if (e.target.getAttribute("data-food") === "true") {
-//     score++;
-//     foodX = Math.floor(Math.random() * 30);
-//     foodY = Math.floor(Math.random() * 30);
-//   }
-// });
-
 {
   document.addEventListener('touchstart', handleTouchStart, false);
   document.addEventListener('touchmove', handleTouchMove, false);
@@ -216,4 +235,4 @@ addEventListener("keydown", handleKeyDown);
   };
 }
 
-console.log('has swipe');
+console.log('has swipe v2'); 
