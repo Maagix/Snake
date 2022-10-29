@@ -233,6 +233,8 @@ addEventListener("keydown", handleKeyDown);
     xDown = null;
     yDown = null;
   };
+
+  evt.preventDefault()
 }
 
 console.log('has swipe v2'); 
