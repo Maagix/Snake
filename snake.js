@@ -1,7 +1,7 @@
 // toate sunt '' inafara de una care e 'r' | 'u' | 'd' | 'l'
-const cellDimention = 50
-const width = Math.floor(window.innerWidth * .9 / cellDimention)
-const height = Math.floor(window.innerHeight * .9 / cellDimention)
+const cellDimention = 50;
+const width = Math.floor((window.innerWidth * 0.9) / cellDimention);
+const height = Math.floor((window.innerHeight * 0.9) / cellDimention);
 
 let difficulty = 70;
 let score = 0;
@@ -16,7 +16,7 @@ let direction = "down";
 let directionLastFrame = direction;
 let directionX = 0;
 let directionY = 1;
-let isSecondRender = false
+let isSecondRender = false;
 let foodX;
 let foodY;
 randomizeFoodPosition();
@@ -44,20 +44,20 @@ function render() {
         const isHead = i == headPosY && j == headPosX;
 
         const content = isHead
-          ? `<img width="${cellDimention}px" height="${cellDimention}px" src="Mihai.png">`
+          ? `<img width="${cellDimention}px" height="${cellDimention}px" src="fcsb.png">`
           : isFood
-            ? `<img width="${cellDimention}px" height="${cellDimention}px" src="shit.png">`
-            : isBody
-              ? `<img width="${cellDimention}px" height="${cellDimention}px" src="trash.png">`
-              : `<img width="${cellDimention}px" height="${cellDimention}px" src="trash.png">`;
+          ? `<img width="${cellDimention}px" height="${cellDimention}px" src="shit.png">`
+          : isBody
+          ? `<img width="${cellDimention}px" height="${cellDimention}px" src="trash.png">`
+          : `<img width="${cellDimention}px" height="${cellDimention}px" src="trash.png">`;
 
         str += `<div data-x=${j} data-y=${i} style="width:${cellDimention}px; height:${cellDimention}px; display: inline-block;">${content}</div>`;
       }
       str += `<br>`;
     }
 
-    document.body.innerHTML = str + `</div><br><span style="font-size: 40px">${score}</span>`;
-
+    document.body.innerHTML =
+      str + `</div><br><span style="font-size: 40px">${score}</span>`;
   } else {
     for (let i = 0; i < height; i++) {
       for (let j = 0; j < width; j++) {
@@ -73,21 +73,23 @@ function render() {
         const isHead = i == headPosY && j == headPosX;
 
         const src = isHead
-          ? "Mihai.png"
+          ? "fcsb.png"
           : isFood
-            ? "shit.png"
-            : isBody
-              ? "trash.png"
-              : "";
+          ? "shit.png"
+          : isBody
+          ? "trash.png"
+          : "";
 
-        const element = document.querySelector(`[data-x="${j}"][data-y="${i}"] img`)
-        element.src = src
-        element.style.display = src ? 'inline' : 'none'
+        const element = document.querySelector(
+          `[data-x="${j}"][data-y="${i}"] img`
+        );
+        element.src = src;
+        element.style.display = src ? "inline" : "none";
       }
     }
   }
 
-  isSecondRender = true
+  isSecondRender = true;
 }
 
 function frame() {
@@ -188,22 +190,24 @@ function handleKeyDown(e) {
 addEventListener("keydown", handleKeyDown);
 
 {
-  document.addEventListener('touchstart', handleTouchStart, false);
-  document.addEventListener('touchmove', handleTouchMove, false);
+  document.addEventListener("touchstart", handleTouchStart, false);
+  document.addEventListener("touchmove", handleTouchMove, false);
 
   var xDown = null;
   var yDown = null;
 
   function getTouches(evt) {
-    return evt.touches ||             // browser API
-      evt.originalEvent.touches; // jQuery
+    return (
+      evt.touches || // browser API
+      evt.originalEvent.touches
+    ); // jQuery
   }
 
   function handleTouchStart(evt) {
     const firstTouch = getTouches(evt)[0];
     xDown = firstTouch.clientX;
     yDown = firstTouch.clientY;
-  };
+  }
 
   function handleTouchMove(evt) {
     if (!xDown || !yDown) {
@@ -216,25 +220,24 @@ addEventListener("keydown", handleKeyDown);
     var xDiff = xDown - xUp;
     var yDiff = yDown - yUp;
 
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+      /*most significant*/
       if (xDiff > 0) {
-        handleKeyDown({ key: 'a' })
+        handleKeyDown({ key: "a" });
       } else {
-        handleKeyDown({ key: 'd' })
+        handleKeyDown({ key: "d" });
       }
     } else {
       if (yDiff > 0) {
-        handleKeyDown({ key: 'w' })
+        handleKeyDown({ key: "w" });
       } else {
-        handleKeyDown({ key: 's' })
+        handleKeyDown({ key: "s" });
       }
     }
     /* reset values */
     xDown = null;
     yDown = null;
-  };
-
-  evt.preventDefault()
+  }
 }
 
-console.log('has swipe v2'); 
+console.log("has swipe v2");
