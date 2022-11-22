@@ -5,6 +5,7 @@ const height = Math.floor((window.innerHeight * 0.9) / cellDimention);
 
 let difficulty = 70;
 let score = 0;
+let highscore = 0;
 
 let bodyX = []; // [first after head.... last after head]
 let bodyY = [];
@@ -57,7 +58,7 @@ function render() {
     }
 
     document.body.innerHTML =
-      str + `</div><br><span style="font-size: 40px">${score}</span>`;
+      str + `</div><br><span style="font-size: 40px"></span>`;
   } else {
     for (let i = 0; i < height; i++) {
       for (let j = 0; j < width; j++) {
@@ -125,6 +126,7 @@ function frame() {
   }
   if (isOnFood) {
     score++;
+    document.querySelector(".label-score").textContent = `🥇 Score: ${score}`;
     randomizeFoodPosition();
   }
 
@@ -138,7 +140,14 @@ function frame() {
 
   if (isOnBody) {
     alert("🚮 esti gunoi");
+    if (score > highscore) {
+      highscore = score;
+      document.querySelector(
+        ".label-highscore"
+      ).textContent = `🥇 Highscore: ${highscore}`;
+    }
     score = 0;
+
     isUp = false;
     isDown = true;
     isLeft = false;
