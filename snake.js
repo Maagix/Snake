@@ -147,6 +147,7 @@ function frame() {
       ).textContent = `🥇 Highscore: ${highscore}`;
     }
     score = 0;
+    document.querySelector(".label-score").textContent = `🥇 Score: ${score}`;
 
     isUp = false;
     isDown = true;
